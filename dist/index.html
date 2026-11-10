@@ -15,9 +15,13 @@
     button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #b55e40; outline-offset: 4px; }
     a { color: inherit; }
     header { min-height: 80px; padding: 18px 5%; border-bottom: 1px solid #dedfd5; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .topic-picker { position: sticky; top: 0; z-index: 20; background: #f1f3e9; border-bottom: 1px solid #d7decd; padding: 14px 5%; display: flex; align-items: center; justify-content: center; gap: 20px; }
+    .topic-picker label { font-size: 14px; font-weight: 600; }
+    .topic-picker select { min-width: 0; width: min(550px, 65vw); padding: 12px; border: 1px solid #bdcbb5; border-radius: 8px; color: #203e31; background: white; }
+    select:focus-visible { outline: 3px solid #b55e40; }
     .brand { font: bold 26px Georgia, serif; }
     nav, .actions, .tabs { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    main { max-width: 760px; margin: 55px auto; padding: 0 24px; }
+    main { max-width: 760px; margin: 30px auto; padding: 0 24px; }
     .meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: #687768; font-size: 13px; }
     progress { width: 100%; height: 5px; accent-color: #31543e; margin: 12px 0 28px; }
     .tabs { margin-bottom: 24px; }
@@ -47,7 +51,7 @@
     #files { display: flex; flex-wrap: wrap; gap: 8px; }
     #source { max-height: 45vh; overflow: auto; }
     iframe { width: 100%; height: 62vh; border: 1px solid #ddd; background: white; display: block; margin: 15px auto 0; max-width: 100%; }
-    @media(max-width:600px) { header { align-items: flex-start; flex-direction: column; gap: 12px; } nav { gap: 7px; } nav button { font-size: 13px; padding: 7px 10px; } main { margin: 25px auto; padding: 0 15px; } article { padding: 24px; } h1 { font-size: 32px; } }
+    @media(max-width:600px) { .topic-picker { display: block; padding: 10px 15px; } .topic-picker label { display:block; margin-bottom:5px; } .topic-picker select { width:100%; } header { align-items: flex-start; flex-direction: column; gap: 12px; } nav { gap: 7px; } nav button { font-size: 13px; padding: 7px 10px; } main { margin: 25px auto; padding: 0 15px; } article { padding: 24px; } h1 { font-size: 32px; } }
   </style>
 </head>
 <body>
@@ -59,9 +63,13 @@
       <button data-dialog="reference">Ver Brote ↗</button>
     </nav>
   </header>
+  <div class="topic-picker">
+    <label for="topic">¿Qué querés aprender?</label>
+    <select id="topic" aria-label="Elegir tema"></select>
+  </div>
   <main>
     <div class="meta"><span id="position"></span><button data-dialog="roadmap">Ver recorrido</button></div>
-    <progress id="progress" max="8" value="0" aria-label="Ejercicios completados"></progress>
+    <progress id="progress" max="44" value="0" aria-label="Ejercicios completados"></progress>
     <div class="tabs" aria-label="Etapa del paso">
       <button id="theoryTab" aria-pressed="true">1. Entender</button>
       <button id="practiceTab" aria-pressed="false">2. Aplicar</button>
@@ -74,6 +82,7 @@
         <pre id="example"></pre>
         <p class="note" id="caption"></p>
         <div class="actions"><button class="primary" id="apply">Aplicar esto →</button></div>
+        <details><summary>Para profundizar</summary><p class="note">Referencia del módulo y práctica guiada.</p><p><a id="reading" target="_blank" rel="noopener">Leer en MDN ↗</a></p><p><a href="https://www.freecodecamp.org/news/responsive-web-design-certification-redesigned/" target="_blank" rel="noopener">Proyectos de HTML y CSS en freeCodeCamp ↗</a></p></details>
       </section>
       <section id="practice" hidden>
         <p class="eyebrow">Ahora en VS Code</p>
@@ -93,6 +102,6 @@
   <dialog id="roadmap"><div class="dialog-head"><h2>Tu recorrido</h2><button data-close>Cerrar</button></div><div id="lessonList"></div><button id="uncomplete" style="margin-top:20px">Desmarcar el paso actual</button></dialog>
   <dialog id="map"><div class="dialog-head"><h2>Archivos de Brote</h2><button data-close>Cerrar</button></div><p class="note">Están dentro de brote/ en VS Code. Acá podés consultar la referencia.</p><div id="files"></div><p id="fileInfo" style="margin-top:16px"></p><pre id="source">Cargando referencia…</pre></dialog>
   <dialog id="reference"><div class="dialog-head"><h2>Brote</h2><button data-close>Cerrar</button></div><div class="actions"><a href="brote/" target="_blank" rel="noopener">Abrir en otra pestaña ↗</a><button id="desktop">Escritorio</button><button id="mobile">Celular</button></div><iframe id="preview" title="Brote" sandbox="allow-same-origin"></iframe></dialog>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
