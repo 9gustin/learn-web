@@ -1,5 +1,98 @@
-<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Taller Web · Aprendé construyendo</title><style>
-*{box-sizing:border-box}body{margin:0;background:#f6f4ed;color:#203d32;font:15px/1.6 Arial}button,a,select{cursor:pointer}header{height:85px;border-bottom:1px solid #dcded3;display:flex;align-items:center;justify-content:space-between;padding:0 35px}.brand{font:bold 28px Georgia}a{color:inherit}.tag{font-size:11px;letter-spacing:2px;color:#737d70}button{border:1px solid #d5d9cc;background:transparent;color:inherit;padding:10px 17px;border-radius:6px;font:inherit}button:hover{background:#e5eadf}.primary{background:#224b38;color:white}.layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 85px)}aside{padding:30px 20px;border-right:1px solid #dcded3}aside button{display:block;text-align:left;width:100%;margin:8px 0;border:0}.active{background:#e2e9db;font-weight:bold}h1,h2{font-family:Georgia}h1{font-size:36px;margin:4px 0}h2{font-size:26px;margin:0 0 10px}.workspace{padding:30px}.heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.panels{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(300px,1.1fr);gap:24px}.lesson{background:#e9ecdf;border-radius:10px;padding:24px;margin-bottom:18px}.editor{background:#172b25;border-radius:10px;overflow:hidden}.bar{padding:12px 18px;border-bottom:1px solid #ffffff20;color:#c4d4c8;display:flex;gap:12px}textarea{display:block;width:100%;height:330px;resize:vertical;background:transparent;color:#e6efca;border:0;padding:22px;font:14px/1.7 monospace;tab-size:2}textarea:focus{outline:2px solid #8fa986;outline-offset:-2px}.actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}.preview{background:white;border:1px solid #d5d9cc;border-radius:10px;overflow:hidden}.preview .bar{color:#264b35;background:#eef0e7;justify-content:space-between}iframe{display:block;width:100%;height:640px;border:0;background:white;margin:auto;transition:width .2s}progress{accent-color:#244f39;width:100%}.muted{color:#748174;font-size:13px}#feedback{min-height:28px}#hint{font-size:14px}select{padding:8px;border-radius:4px;border:1px solid #cbd4c5;background:white}@media(max-width:1000px){.layout{grid-template-columns:180px 1fr}.panels{grid-template-columns:1fr}.workspace{padding:20px}}@media(max-width:600px){header{padding:15px;height:auto;gap:20px}.brand{font-size:22px}.layout{display:block}aside{border:0;padding:15px}aside button{display:inline-block;width:auto}.heading{display:block}.workspace{padding:15px}}
-
-.view-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.view-controls .active{background:#244b38;color:white}.map{border:1px solid #cbd4c5;padding:16px 20px;border-radius:9px;margin-bottom:20px;background:#eef0e7}.map summary{cursor:pointer;font-weight:bold}.map p{font-size:13px}#files{display:flex;gap:7px;flex-wrap:wrap}#files button{font:13px monospace}.lesson pre{white-space:pre-wrap;background:#f8f8f0;padding:14px;border-radius:6px;overflow-wrap:anywhere}.lesson .tag{margin-top:25px;font-weight:bold}.panels>div{min-width:0}body[data-view="preview"] .panels>div:first-child,body[data-view="editor"] .preview{display:none}body[data-view="preview"] .panels,body[data-view="editor"] .panels{grid-template-columns:1fr}body[data-view="preview"] iframe{height:80vh}body.focus aside,body.focus .heading,body.focus .map{display:none}body.focus .layout{grid-template-columns:1fr}body.focus .workspace{padding:16px}textarea[readonly]{color:#b8c5b9}#expected{font-weight:bold}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #b65b3c;outline-offset:3px}
-</style><header><div class="brand">〈/〉 Taller Web</div><a href="brote/index.html" target="_blank">Ver Brote terminado ↗</a></header><div class="layout"><aside><p class="tag">TU RECORRIDO</p><div id="lessons"></div><p class="tag">PROYECTO BROTE</p><p>Cinco páginas.<br>Una idea que crece.</p><progress id="progress" value="0" max="8"></progress><p class="muted" id="count"></p><p class="muted">Tu avance se guarda en este navegador. Tu código vive en VS Code.</p></aside><main class="workspace"><details class="map" open><summary>Empezá acá · VS Code + navegador</summary><ol><li><a href="https://github.com/9gustin/learn-web/archive/refs/heads/main.zip">Descargá el proyecto</a>, descomprimilo y abrí la carpeta en VS Code.</li><li>En Terminal → Nueva terminal, ejecutá <code>npm start</code>. Se abren VS Code y las dos pestañas del navegador.</li><li>Si las pestañas no se abren, usá las direcciones de la terminal. Por defecto, <a href="http://localhost:3000" target="_blank">la guía local</a> y <a href="http://localhost:3000/brote/" target="_blank">tu Brote local</a> en dos pestañas.</li><li>Elegí un paso. Editá el archivo indicado en VS Code, guardá con Ctrl+S o ⌘S y recargá Brote.</li></ol><p>Brote viene terminado como referencia. Cada práctica te propone un cambio sobre esos archivos. Marcá el paso cuando hayas comprobado el resultado. La guía publicada no lee tus archivos locales.</p></details><div class="heading"><div><p class="tag">APRENDÉ HACIENDO</p><h1 id="title"></h1></div><span class="muted" id="step"></span></div><div class="view-controls" aria-label="Distribución de la pantalla"><button data-view="split">Guía + referencia</button><button data-view="editor">Solo guía</button><button data-view="preview">Solo referencia</button><button id="focus">Ampliar espacio</button></div><details class="map" open><summary>Archivos del proyecto · Brote</summary><p>Elegí un archivo para ver su contenido. Los archivos viven en la carpeta brote/ del repositorio. El archivo marcado «Ejercicio» es el que tenés que abrir en VS Code. Acá podés consultar su código de referencia.</p><div id="files"></div><p id="fileDescription"></p><button id="backToExercise" hidden>Volver al ejercicio</button></details><div class="panels"><div><section class="lesson"><p class="tag">1 · OBJETIVO</p><h2 id="task"></h2><p id="goal"></p><p class="tag">2 · CÓMO FUNCIONA</p><p id="explanation"></p><p class="tag">3 · EJEMPLO EXPLICADO</p><pre id="example"></pre><p id="exampleExplanation"></p><p class="tag">4 · AHORA HACÉLO VOS</p><p id="description"></p><p class="tag">5 · COMPROBÁ EL RESULTADO</p><p id="expected"></p><p>Guardá el archivo en VS Code y recargá tu Brote local. Cuando veas el resultado esperado, marcá el paso como completado.</p><button id="showHint">Dame una pista</button><p id="hint" hidden></p></section><details class="editor"><summary style="padding:12px 18px;color:#d8e4d7;cursor:pointer">Consultar código del archivo seleccionado</summary><div class="bar"><span id="filename"></span><span>• referencia · editá en VS Code</span></div><textarea id="code" spellcheck="false" aria-label="Editor de código"></textarea></details><div class="actions"><button class="primary" id="check">Marcar como completado</button><button id="next">Siguiente →</button><button id="reset">Desmarcar paso</button></div><p id="feedback" role="status"></p></div><div class="preview"><div class="bar"><span>◉ Referencia de Brote</span><select id="size" aria-label="Tamaño de vista previa"><option value="100%">Escritorio</option><option value="375px">Celular</option></select></div><iframe id="preview" title="Referencia de Brote" sandbox="allow-same-origin"></iframe></div></div></main></div><script src="app.js"></script></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taller Web · Un paso a la vez</title>
+  <style>
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; background: #f7f5ee; color: #203e31; font: 16px/1.65 system-ui, sans-serif; }
+    button, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { cursor: pointer; border: 1px solid #d6ddcf; border-radius: 8px; background: transparent; color: inherit; padding: 10px 17px; }
+    button:hover { background: #e7ecdf; }
+    button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #b55e40; outline-offset: 4px; }
+    a { color: inherit; }
+    header { min-height: 80px; padding: 18px 5%; border-bottom: 1px solid #dedfd5; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { font: bold 26px Georgia, serif; }
+    nav, .actions, .tabs { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    main { max-width: 760px; margin: 55px auto; padding: 0 24px; }
+    .meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: #687768; font-size: 13px; }
+    progress { width: 100%; height: 5px; accent-color: #31543e; margin: 12px 0 28px; }
+    .tabs { margin-bottom: 24px; }
+    .tabs button { border: 0; color: #758173; }
+    .tabs button[aria-pressed="true"] { background: #e4eadd; color: #203e31; font-weight: 600; }
+    article { padding: 34px; border: 1px solid #dedfd5; border-radius: 16px; background: #fffef9; box-shadow: 0 5px 24px #203e3105; }
+    .eyebrow { color: #78836f; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; margin: 0 0 10px; }
+    h1, h2 { font: 38px/1.15 Georgia, serif; margin: 0 0 20px; }
+    p { margin: 0 0 20px; }
+    pre { background: #1e342b; color: #e2eed2; padding: 22px; border-radius: 9px; white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.7 ui-monospace, monospace; }
+    .note { color: #74806e; font-size: 13px; }
+    .primary { background: #244d36; color: white; border-color: #244d36; }
+    .primary:hover { background: #173b27; }
+    .actions { margin-top: 28px; }
+    .file { display: inline-block; padding: 7px 12px; border-radius: 5px; background: #eef1e6; font-size: 13px; margin-bottom: 20px; overflow-wrap: anywhere; }
+    .result { border-left: 3px solid #b9c6a8; padding-left: 15px; }
+    details { margin-top: 20px; }
+    summary { cursor: pointer; }
+    .footer { display: flex; justify-content: space-between; margin-top: 20px; gap: 16px; }
+    #feedback { margin-top: 18px; font-size: 14px; }
+    dialog { width: min(900px, 95vw); max-height: 88vh; padding: 28px; border: 1px solid #d6ddcf; border-radius: 16px; color: inherit; background: #fffef9; }
+    dialog::backdrop { background: #12291f80; }
+    .dialog-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+    .dialog-head h2 { font-size: 28px; margin: 0; }
+    #lessonList { display: grid; gap: 8px; }
+    #lessonList button { text-align: left; }
+    #files { display: flex; flex-wrap: wrap; gap: 8px; }
+    #source { max-height: 45vh; overflow: auto; }
+    iframe { width: 100%; height: 62vh; border: 1px solid #ddd; background: white; display: block; margin: 15px auto 0; max-width: 100%; }
+    @media(max-width:600px) { header { align-items: flex-start; flex-direction: column; gap: 12px; } nav { gap: 7px; } nav button { font-size: 13px; padding: 7px 10px; } main { margin: 25px auto; padding: 0 15px; } article { padding: 24px; } h1 { font-size: 32px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="brand">〈/〉 Taller Web</span>
+    <nav aria-label="Ayuda y proyecto">
+      <button data-dialog="setup">Cómo empezar</button>
+      <button data-dialog="map">Archivos</button>
+      <button data-dialog="reference">Ver Brote ↗</button>
+    </nav>
+  </header>
+  <main>
+    <div class="meta"><span id="position"></span><button data-dialog="roadmap">Ver recorrido</button></div>
+    <progress id="progress" max="8" value="0" aria-label="Ejercicios completados"></progress>
+    <div class="tabs" aria-label="Etapa del paso">
+      <button id="theoryTab" aria-pressed="true">1. Entender</button>
+      <button id="practiceTab" aria-pressed="false">2. Aplicar</button>
+    </div>
+    <article>
+      <section id="theory">
+        <p class="eyebrow">Una idea</p>
+        <h1 id="title"></h1>
+        <p id="explanation"></p>
+        <pre id="example"></pre>
+        <p class="note" id="caption"></p>
+        <div class="actions"><button class="primary" id="apply">Aplicar esto →</button></div>
+      </section>
+      <section id="practice" hidden>
+        <p class="eyebrow">Ahora en VS Code</p>
+        <h1 id="taskTitle"></h1>
+        <code class="file" id="file"></code>
+        <p id="task"></p>
+        <p class="note">Guardá y recargá Brote en el navegador.</p>
+        <p class="result" id="expected"></p>
+        <details id="hint"><summary>Necesito una pista</summary><pre id="solution"></pre></details>
+        <div class="actions"><button class="primary" id="complete">Lo hice →</button><button id="back">Volver a la explicación</button></div>
+        <p id="feedback" role="status"></p>
+      </section>
+    </article>
+    <div class="footer"><button id="previous">← Paso anterior</button><span class="note" id="count"></span></div>
+  </main>
+  <dialog id="setup"><div class="dialog-head"><h2>Todo listo en un comando</h2><button data-close>Cerrar</button></div><p>Con Node.js y VS Code instalados, ejecutá en la terminal del proyecto.</p><pre>npm start</pre><p>Se abren VS Code, esta guía y Brote. Leé acá, editá en VS Code y recargá Brote para ver el cambio.</p><a href="https://github.com/9gustin/learn-web">Descargar o clonar el proyecto ↗</a><p class="note">Brote viene terminado para practicar cambios. “Lo hice” guarda tu avance manualmente en este navegador.</p></dialog>
+  <dialog id="roadmap"><div class="dialog-head"><h2>Tu recorrido</h2><button data-close>Cerrar</button></div><div id="lessonList"></div><button id="uncomplete" style="margin-top:20px">Desmarcar el paso actual</button></dialog>
+  <dialog id="map"><div class="dialog-head"><h2>Archivos de Brote</h2><button data-close>Cerrar</button></div><p class="note">Están dentro de brote/ en VS Code. Acá podés consultar la referencia.</p><div id="files"></div><p id="fileInfo" style="margin-top:16px"></p><pre id="source">Cargando referencia…</pre></dialog>
+  <dialog id="reference"><div class="dialog-head"><h2>Brote</h2><button data-close>Cerrar</button></div><div class="actions"><a href="brote/" target="_blank" rel="noopener">Abrir en otra pestaña ↗</a><button id="desktop">Escritorio</button><button id="mobile">Celular</button></div><iframe id="preview" title="Brote" sandbox="allow-same-origin"></iframe></dialog>
+  <script src="app.js"></script>
+</body>
+</html>

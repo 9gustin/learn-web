@@ -1,144 +1,186 @@
-const $=id=>document.getElementById(id);
-const lessons=[
-['HTML','Tu primera estructura','Creá el título principal','HTML describe el contenido. Agregá un h1 con el texto que quieras para presentar Brote. La página debería tener un título principal claro.','<h1>Un poco más de verde en casa</h1>','<main>\n  <!-- Escribí tu título acá -->\n</main>',d=>!!d.querySelector('h1')?.textContent.trim()],
-['HTML','Conectá las páginas','Sumá la navegación','Dentro de nav, agregá un enlace a ./pages/contacto.html. Una ruta relativa se resuelve desde el archivo actual. Desde una página interna usarías ../index.html para volver al inicio.','<nav><a href="./pages/contacto.html">Contacto</a></nav>','<header>\n  <strong>Brote</strong>\n  <nav></nav>\n</header>\n<main><h1>Un poco más de verde en casa</h1></main>',d=>[...d.querySelectorAll('nav a')].some(a=>['./pages/contacto.html','pages/contacto.html'].includes(a.getAttribute('href')))],
-['HTML','Contenido con sentido','Creá una sección de plantas','Agregá una section con un h2 y una lista ul que tenga al menos dos plantas dentro de elementos li. Los títulos organizan el contenido para todas las personas.','<section><h2>Nuestras plantas</h2><ul><li>Monstera</li><li>Potus</li></ul></section>','<main>\n  <h1>Brote</h1>\n  <!-- Tu sección va acá -->\n</main>',d=>!!d.querySelector('section h2')&&d.querySelectorAll('section ul li').length>=2],
-['HTML','Tu primera consulta','Armá un campo accesible','Agregá un label asociado mediante for al id de un input. El campo debe ser type="email" y required. Así el navegador puede comprobar el formato y exigir que se complete.','<label for="email">Tu email</label>\n<input id="email" type="email" required>','<h1>Contacto</h1>\n<form>\n  <!-- Agregá el campo y su etiqueta -->\n  <button>Enviar</button>\n</form>',d=>[...d.querySelectorAll('input[type=email][required]')].some(i=>i.id&&[...d.querySelectorAll('label')].some(l=>l.htmlFor===i.id))],
-['CSS','Un primer toque de color','Probá un estilo en línea','El atributo style aplica CSS a un elemento. Agregá color: green al h1 y mirá cómo cambia. Después vamos a reutilizar estilos con selectores.','<h1 style="color: green">Brote</h1>','<h1>Brote</h1>\n<p>Un poco más de verde en casa.</p>',d=>d.querySelector('h1')?.style.color==='green'],
-['CSS','Estilos compartidos','Dale color al título','Ahora trabajás en styles.css. Seleccioná h1 y asignale color: #193e30. Una hoja externa se conecta con link rel="stylesheet" y permite reutilizar reglas entre las cinco páginas.','h1 { color: #193e30; }','/* Escribí tu regla */',(_,s)=>checkRule(s,'h1','color','#193e30')],
-['CSS','Una clase, muchos elementos','Estilizá los botones','La clase boton ya está en los enlaces del ejemplo. Creá .boton con background: #193e30 y color: white. Las clases se pueden repetir en varios elementos.','.boton { background: #193e30; color: white; }','h1 { color: #193e30; }\n\n/* Tu clase acá */',(_,s)=>checkRule(s,'.boton','background','#193e30')&&checkRule(s,'.boton','color','white')],
-['CSS','Un elemento único','Destacá la portada','El hero tiene id="portada". Usá #portada para agregar padding: 32px. El padding crea espacio interior. Un ID debe ser único dentro de cada página.','#portada { padding: 32px; }','h1 { color: #193e30; }\n.boton { background: #193e30; color: white; }\n',(_,s)=>checkRule(s,'#portada','padding','32px')]
+const $ = id => document.getElementById(id);
+const lessons = [
+  {
+    title: 'El título principal',
+    explanation: 'h1 marca el título principal de una página. Escribís el texto entre la etiqueta de apertura y la de cierre.',
+    example: '<h1>Mi tienda de plantas</h1>',
+    caption: 'El navegador muestra el texto. Las etiquetas le dan significado.',
+    taskTitle: 'Poné tu propio título', file: 'index.html',
+    task: 'Buscá el h1 de la portada y cambiá su texto por “Mi rincón verde”.',
+    expected: 'El título de la portada debe decir “Mi rincón verde”.',
+    solution: '<h1>Mi rincón verde</h1>'
+  },
+  {
+    title: 'Un enlace a otra página',
+    explanation: 'a crea un enlace. href indica el archivo de destino y el texto entre las etiquetas es lo que se puede pulsar.',
+    example: '<a href="./pages/faq.html">Preguntas</a>',
+    caption: './pages/ significa entrar en la carpeta pages desde index.html.',
+    taskTitle: 'Conectá con Contacto', file: 'index.html',
+    task: 'Dentro de nav, cambiá el enlace Contacto para que diga “Escribinos” y apunte a ./pages/contacto.html.',
+    expected: 'Al pulsar “Escribinos”, se abre Contacto.',
+    solution: '<a href="./pages/contacto.html">Escribinos</a>'
+  },
+  {
+    title: 'Una lista de elementos',
+    explanation: 'ul agrupa una lista con viñetas. Cada elemento de la lista va dentro de un li.',
+    example: '<ul>\n  <li>Macetas</li>\n  <li>Regaderas</li>\n</ul>',
+    caption: 'Una etiqueta li por cada elemento.',
+    taskTitle: 'Listá tus plantas favoritas', file: 'index.html',
+    task: 'Justo antes de </main>, agregá una lista ul con dos plantas que te gusten.',
+    expected: 'Al final del contenido aparecen tus dos plantas con viñetas.',
+    solution: '<ul>\n  <li>Monstera</li>\n  <li>Potus</li>\n</ul>'
+  },
+  {
+    title: 'La etiqueta de un campo',
+    explanation: 'label nombra un campo. Su atributo for se conecta con el id del input cuando ambos tienen el mismo valor.',
+    example: '<label for="nombre">Nombre</label>\n<input id="nombre">',
+    caption: 'Pulsar la etiqueta activa el campo asociado.',
+    taskTitle: 'Conectá la etiqueta Email', file: 'pages/contacto.html',
+    task: 'Agregá id="email" al input de email y for="email" a su label.',
+    expected: 'Al pulsar “Email”, el cursor se coloca en ese campo.',
+    solution: '<label for="email">Email\n  <input id="email" required type="email"\n    name="email" autocomplete="email">\n</label>'
+  },
+  {
+    title: 'Un estilo en el HTML',
+    explanation: 'El atributo style cambia el aspecto de un elemento. color es la propiedad y blue es el valor.',
+    example: '<p style="color: blue">Texto azul</p>',
+    caption: 'Esta declaración afecta solamente a ese párrafo.',
+    taskTitle: 'Pintá el título de verde', file: 'index.html',
+    task: 'Agregá style="color: green" al h1 de la portada.',
+    expected: 'El título se ve verde.',
+    solution: '<h1 style="color: green">Mi rincón verde</h1>'
+  },
+  {
+    title: 'Una regla en CSS',
+    explanation: 'Una regla elige elementos y les aplica estilos. El selector p elige los párrafos. Entre llaves escribís qué cambiar.',
+    example: 'p {\n  color: blue;\n}',
+    caption: 'Brote ya conecta sus páginas con styles.css mediante una etiqueta link.',
+    taskTitle: 'Compartí el color del título', file: 'styles.css',
+    task: 'Quitá el style del h1 en index.html. Después, al final de styles.css, agregá una regla h1 con color: #193e30.',
+    expected: 'Los títulos principales de Brote se ven verde oscuro.',
+    solution: 'h1 {\n  color: #193e30;\n}'
+  },
+  {
+    title: 'Una clase reutilizable',
+    explanation: 'class asigna un nombre a un elemento. En CSS, un punto seguido de ese nombre selecciona todos los elementos con esa clase.',
+    example: '<a class="aviso">Novedades</a>\n\n/* En styles.css */\n.aviso { color: blue; }',
+    caption: 'En HTML escribís aviso. En CSS escribís .aviso.',
+    taskTitle: 'Dale color al botón', file: 'styles.css',
+    task: 'Agregá al final una regla .boton con background: #193e30 y color: white. El enlace “Ver plantas” ya tiene esa clase.',
+    expected: '“Ver plantas” tiene fondo verde oscuro y texto blanco.',
+    solution: '.boton {\n  background: #193e30;\n  color: white;\n}'
+  },
+  {
+    title: 'Un elemento por su ID',
+    explanation: 'id identifica un elemento único. En CSS lo seleccionás con #. La propiedad padding agrega espacio interior.',
+    example: '<section id="ofertas">…</section>\n\n/* En styles.css */\n#ofertas { padding: 16px; }',
+    caption: '16px agrega espacio en los cuatro lados.',
+    taskTitle: 'Dale aire a la portada', file: 'styles.css',
+    task: 'Agregá al final #portada { padding: 32px; }. La sección de portada ya tiene id="portada".',
+    expected: 'Aparece espacio interior alrededor del contenido de la portada.',
+    solution: '#portada {\n  padding: 32px;\n}'
+  }
 ];
-function checkRule(source,selector,property,value){try{const sheet=new CSSStyleSheet();sheet.replaceSync(source);return [...sheet.cssRules].some(r=>r.selectorText===selector&&r.style?.getPropertyValue(property).trim()===value)}catch{return false}}
-const teaching = [
-  {goal:'Al terminar vas a poder agregar el título principal de una página.', explanation:'HTML usa etiquetas para darle significado al contenido. <h1> abre un título principal y </h1> lo cierra. El texto entre ambas etiquetas es lo que muestra el navegador. <main> contiene el contenido principal.', example:'<main>\n  <h1>Bienvenidos a mi tienda</h1>\n</main>', detail:'main agrupa el contenido. h1 indica qué texto es el título más importante. Las etiquetas no se muestran en la página.', expected:'Deberías ver tu título con el tamaño que le da el navegador.'},
-  {goal:'Al terminar vas a poder conectar dos archivos HTML mediante un enlace.', explanation:'nav agrupa la navegación. a crea un enlace y href indica el destino. Desde index.html, ./pages/contacto.html significa entrar en la carpeta pages y abrir contacto.html. El texto entre <a> y </a> es lo que se puede pulsar.', example:'<nav>\n  <a href="./pages/faq.html">Preguntas frecuentes</a>\n</nav>', detail:'Este ejemplo apunta a FAQ. Para tu ejercicio tenés que cambiar el destino y el texto para ir a Contacto. Desde pages/contacto.html, ../index.html vuelve a la carpeta superior.', expected:'Deberías ver un enlace Contacto dentro de la navegación. La preview aísla el ejercicio; las páginas completas se recorren desde Ver Brote terminado.'},
-  {goal:'Al terminar vas a poder agrupar contenido relacionado y crear una lista.', explanation:'section agrupa un tema. h2 le da un subtítulo debajo del h1. ul abre una lista sin orden numérico y cada li representa un elemento. Cada etiqueta abierta tiene que cerrarse en el orden correcto.', example:'<section>\n  <h2>Accesorios</h2>\n  <ul>\n    <li>Macetas</li>\n    <li>Regaderas</li>\n  </ul>\n</section>', detail:'La lista está dentro de la sección. Cada accesorio está dentro de su propio li. Vas a aplicar la misma estructura a las plantas.', expected:'Deberías ver un subtítulo y al menos dos plantas con viñetas.'},
-  {goal:'Al terminar vas a poder pedir un email con una etiqueta accesible.', explanation:'input crea el campo. type="email" indica su formato y required lo hace obligatorio. label nombra el campo. Su atributo for debe coincidir exactamente con el id del input para asociarlos.', example:'<label for="nombre">Tu nombre</label>\n<input id="nombre" type="text" required>', detail:'for="nombre" conecta la etiqueta con id="nombre". En el ejercicio vas a usar un campo de email y mantener esa coincidencia. No escribas datos personales reales en la práctica.', expected:'Deberías ver una etiqueta y un campo de email. La demostración no envía mensajes.'},
-  {goal:'Al terminar vas a poder cambiar el color de un elemento desde su HTML.', explanation:'style es un atributo de HTML que recibe declaraciones CSS. Cada declaración tiene una propiedad, dos puntos y un valor. color cambia el color del texto. El punto y coma separa las declaraciones.', example:'<p style="color: blue">Una frase azul</p>', detail:'La propiedad color afecta solamente a este párrafo. En tu ejercicio aplicás la misma idea al h1 y elegís green.', expected:'Deberías ver el título Brote en verde.'},
-  {goal:'Al terminar vas a poder escribir una regla CSS en una hoja compartida.', explanation:'Una regla combina un selector y declaraciones entre llaves. h1 selecciona los títulos h1. La hoja styles.css se vincula desde el head de cada HTML con <link rel="stylesheet" href="styles.css">. Las páginas de pages usan ../styles.css.', example:'p {\n  color: #555555;\n}', detail:'p selecciona los párrafos. color define su color. En el ejercicio vas a seleccionar h1. El HTML de referencia queda disponible en el explorador para que veas qué estás estilizando.', expected:'Deberías ver el título en verde oscuro. Los estilos que todavía no escribiste siguen con el aspecto del navegador.'},
-  {goal:'Al terminar vas a poder reutilizar un mismo estilo con una clase.', explanation:'En HTML, class="boton" asigna un nombre a un elemento. En CSS, .boton selecciona todos los elementos con esa clase. El punto va en el selector CSS. background cambia el fondo y color cambia el texto.', example:'<!-- HTML -->\n<a class="aviso">Novedades</a>\n\n/* CSS */\n.aviso {\n  background: orange;\n  color: black;\n}', detail:'El nombre aviso conecta ambos fragmentos. En Brote el enlace Ver plantas ya tiene class="boton". Abrí index.html en el explorador para encontrarlo.', expected:'Deberías ver Ver plantas con fondo verde oscuro y texto blanco.'},
-  {goal:'Al terminar vas a poder seleccionar un elemento único y darle espacio interior.', explanation:'id="portada" identifica una sección. El selector #portada usa ese ID para encontrarla. padding agrega espacio entre el borde del elemento y su contenido. px es una unidad de longitud.', example:'/* HTML de referencia: <section id="ofertas"> */\n#ofertas {\n  padding: 16px;\n}', detail:'El numeral selecciona un ID. 16px agrega espacio en los cuatro lados. En Brote usás #portada y el valor pedido de 32px.', expected:'Deberías ver espacio interior alrededor del contenido de la portada.'}
-];
-const localTasks = [
-  'Abrí brote/index.html. Buscá el h1 de la portada y cambiá su texto por «Mi rincón verde». Conservá las etiquetas de apertura y cierre.',
-  'Abrí brote/index.html. Dentro de nav, encontrá el enlace a Contacto. Cambiá su texto a «Escribinos» y su href a ./pages/contacto.html. Hacé clic en él desde tu Brote local.',
-  'Abrí brote/index.html. Antes del cierre de main, agregá una section con el h2 «Mis favoritas» y una lista ul con dos plantas en elementos li.',
-  'Abrí brote/pages/contacto.html. El input de email ya tiene type="email" y required. Agregale id="email" y a su label agregale for="email". Luego pulsá la etiqueta para comprobar que activa el campo.',
-  'Abrí brote/index.html. Agregá style="color: green" al h1 de la portada. Observá cómo el estilo en línea cambia el color del título.',
-  'En brote/index.html, quitá el style del h1 que agregaste antes. Abrí brote/styles.css y agregá al final h1 { color: #193e30; }. Abrí otra página de Brote y observá que sus títulos comparten ese color.',
-  'Abrí brote/styles.css. Al final, agregá una regla .boton con background: #193e30 y color: white. En brote/index.html, buscá class="boton" para entender qué enlace recibe el estilo.',
-  'Abrí brote/styles.css y agregá #portada { padding: 32px; }. En brote/index.html comprobá que la sección hero tiene id="portada". Observá el espacio interior nuevo.'
-];
-teaching[0].expected = 'El título principal de tu Brote local dice «Mi rincón verde».';
-teaching[1].expected = 'El enlace dice «Escribinos» y abre la página Contacto.';
-teaching[2].expected = 'Al final de la portada aparece Mis favoritas con dos plantas en una lista.';
-teaching[3].expected = 'Al pulsar la etiqueta Email, el cursor se coloca en el campo de email.';
-const fileInfo = {
-  'index.html':'Portada de Brote. Contiene la navegación, la sección portada y el enlace con class="boton".',
-  'pages/plantas.html':'Catálogo de plantas. Comparte styles.css con las otras páginas.',
-  'pages/cuidados.html':'Guía de cuidados con secciones y subtítulos.',
-  'pages/faq.html':'Preguntas frecuentes con details y summary.',
-  'pages/contacto.html':'Formulario de ejemplo. Es el archivo que practicás en el paso 4.',
-  'styles.css':'Hoja de estilos compartida. Desde index.html se enlaza como styles.css y desde pages como ../styles.css.'
+const fileDescriptions = {
+  'index.html': 'Portada y navegación.',
+  'pages/plantas.html': 'Catálogo de plantas.',
+  'pages/cuidados.html': 'Guía de cuidados.',
+  'pages/faq.html': 'Preguntas frecuentes.',
+  'pages/contacto.html': 'Formulario de contacto.',
+  'styles.css': 'Estilos compartidos por las cinco páginas.'
 };
-let state = {index:0, codes:{}, done:[], view:'split'};
+let state = { index: 0, done: [] };
 try {
   const saved = JSON.parse(localStorage.getItem('taller-brote-v1'));
-  if (saved && Number.isInteger(saved.index) && saved.index >= 0 && saved.index < lessons.length) {
-    state = {...state, ...saved, codes:saved.codes || {}, done:Array.isArray(saved.done) ? saved.done : []};
+  if (saved) {
+    if (Number.isInteger(saved.index) && lessons[saved.index]) state.index = saved.index;
+    if (Array.isArray(saved.done)) state.done = [...new Set(saved.done.filter(index => Number.isInteger(index) && lessons[index]))];
   }
 } catch {}
 let project;
-let referenceFile = null;
-function exerciseFile() {
-  if (state.index === 3) return 'pages/contacto.html';
-  return state.index > 4 ? 'styles.css' : 'index.html';
-}
+let referenceFile;
 function save() {
   try { localStorage.setItem('taller-brote-v1', JSON.stringify(state)); }
-  catch { $('feedback').textContent = 'El navegador no permite guardar el avance.'; }
+  catch { $('feedback').textContent = 'El navegador no pudo guardar tu avance.'; }
 }
-function exerciseCode() { return state.codes[state.index] ?? lessons[state.index][5]; }
-function showCode() {
-  const file = referenceFile || exerciseFile();
-  $('filename').textContent = file + (referenceFile ? ' · referencia terminada' : ' · abrilo en VS Code');
-  $('code').value = project.files[file];
-  $('code').readOnly = true;
-  $('code').setAttribute('aria-label', referenceFile ? 'Código de referencia' : 'Editor del ejercicio');
-  $('backToExercise').hidden = !referenceFile;
-  $('fileDescription').textContent = fileInfo[file] + (referenceFile ? ' Estás leyendo la versión terminada.' : ' Abrí brote/' + file + ' en VS Code para hacer la práctica.');
-  $('check').disabled = false;
-  $('reset').disabled = false;
-  $('files').replaceChildren();
-  Object.keys(fileInfo).forEach(path => {
-    const button = document.createElement('button');
-    button.textContent = path + (path === exerciseFile() ? ' · Ejercicio' : '');
-    button.className = path === file ? 'active' : '';
-    button.onclick = () => { referenceFile = path === exerciseFile() ? null : path; showCode(); setView('split'); };
-    $('files').append(button);
-  });
+function setStage(practice, focus = false) {
+  $('theory').hidden = practice;
+  $('practice').hidden = !practice;
+  $('theoryTab').setAttribute('aria-pressed', String(!practice));
+  $('practiceTab').setAttribute('aria-pressed', String(practice));
+  if (focus) $(practice ? 'practiceTab' : 'theoryTab').focus();
 }
 function render() {
   const lesson = lessons[state.index];
-  const content = teaching[state.index];
-  referenceFile = null;
-  $('title').textContent = state.index < 4 ? 'Clase 1 · HTML' : 'Clase 2 · CSS básico';
-  $('task').textContent = lesson[2];
-  $('goal').textContent = content.goal;
-  $('explanation').textContent = content.explanation;
-  $('example').textContent = content.example;
-  $('exampleExplanation').textContent = content.detail;
-  $('expected').textContent = content.expected;
-  $('description').textContent = localTasks[state.index];
-  $('hint').textContent = lesson[4];
-  $('hint').hidden = true;
-  $('step').textContent = `Paso ${state.index % 4 + 1} de 4 · ${exerciseFile()}`;
+  for (const key of ['title', 'explanation', 'example', 'caption', 'taskTitle', 'task', 'expected']) $(key).textContent = lesson[key];
+  $('file').textContent = 'brote/' + lesson.file;
+  $('solution').textContent = lesson.solution;
+  $('hint').open = false;
   $('feedback').textContent = '';
-  $('lessons').replaceChildren();
-  lessons.forEach((lesson, index) => {
-    const button = document.createElement('button');
-    button.textContent = `${state.done.includes(index) ? '✓' : String(index + 1).padStart(2,'0')} ${lesson[1]}`;
-    button.className = index === state.index ? 'active' : '';
-    button.onclick = () => { state.index = index; save(); render(); };
-    $('lessons').append(button);
-  });
+  $('position').textContent = `Clase ${state.index < 4 ? '1 · HTML' : '2 · CSS'} / Paso ${state.index % 4 + 1} de 4`;
   $('progress').value = state.done.length;
-  $('count').textContent = `${state.done.length} de 8 ejercicios completados`;
-  $('next').disabled = state.index === 7;
-  showCode();
-  setView(state.view);
-  preview();
-}
-function preview() {
-  $('preview').removeAttribute('srcdoc');
-  $('preview').src = 'brote/' + (state.index === 3 ? 'pages/contacto.html' : 'index.html');
-}
-function setView(view) {
-  state.view = ['split','editor','preview'].includes(view) ? view : 'split';
-  document.body.dataset.view = state.view;
-  document.querySelectorAll('[data-view]').forEach(button => {
-    if (button.tagName !== 'BUTTON') return;
-    button.classList.toggle('active', button.dataset.view === state.view);
-    button.setAttribute('aria-pressed', String(button.dataset.view === state.view));
+  $('count').textContent = `${state.done.length} de 8 completados`;
+  $('previous').disabled = state.index === 0;
+  $('complete').textContent = state.index === lessons.length - 1 ? 'Terminé la guía ✓' : 'Lo hice · siguiente →';
+  $('lessonList').replaceChildren();
+  lessons.forEach((item, index) => {
+    const button = document.createElement('button');
+    button.textContent = `${state.done.includes(index) ? '✓' : index + 1} · ${item.title}`;
+    if (index === state.index) button.setAttribute('aria-current', 'step');
+    button.onclick = () => { state.index = index; save(); render(); $('roadmap').close(); };
+    $('lessonList').append(button);
   });
-  save();
+  setStage(false);
 }
-$('showHint').onclick = () => { $('hint').hidden = !$('hint').hidden; };
-$('backToExercise').onclick = () => { referenceFile = null; showCode(); };
-$('size').onchange = () => { $('preview').style.width = $('size').value; $('preview').style.maxWidth = '100%'; };
-document.querySelectorAll('button[data-view]').forEach(button => { button.onclick = () => setView(button.dataset.view); });
-$('focus').onclick = () => { const active = document.body.classList.toggle('focus'); $('focus').textContent = active ? 'Mostrar mapa y recorrido' : 'Ampliar espacio'; };
-$('next').onclick = () => { if (state.index < 7) { state.index++; save(); render(); } };
-$('reset').onclick = () => { delete state.codes[state.index]; state.done = state.done.filter(index => index !== state.index); save(); render(); };
-$('check').onclick = () => {
+function showFile(file) {
+  referenceFile = file;
+  $('fileInfo').textContent = 'brote/' + file + ' · ' + fileDescriptions[file];
+  $('source').textContent = project ? project.files[file] : 'Cargando referencia…';
+}
+Object.keys(fileDescriptions).forEach(file => {
+  const button = document.createElement('button');
+  button.textContent = file;
+  button.onclick = () => showFile(file);
+  $('files').append(button);
+});
+document.querySelectorAll('[data-dialog]').forEach(button => {
+  button.onclick = () => {
+    const id = button.dataset.dialog;
+    if (id === 'map') showFile(lessons[state.index].file);
+    if (id === 'reference') $('preview').src = 'brote/';
+    $(id).showModal();
+  };
+});
+document.querySelectorAll('[data-close]').forEach(button => {
+  button.onclick = () => button.closest('dialog').close();
+});
+$('apply').onclick = () => setStage(true, true);
+$('practiceTab').onclick = () => setStage(true);
+$('theoryTab').onclick = () => setStage(false);
+$('back').onclick = () => setStage(false, true);
+$('previous').onclick = () => { if (state.index > 0) { state.index--; save(); render(); } };
+$('complete').onclick = () => {
   if (!state.done.includes(state.index)) state.done.push(state.index);
-  save(); render();
-  $('feedback').textContent = '✓ Paso marcado por vos. La guía no verifica los archivos de VS Code.';
+  if (state.index < lessons.length - 1) {
+    state.index++;
+    save(); render(); $('theoryTab').focus();
+  } else {
+    save();
+    $('progress').value = state.done.length;
+    $('count').textContent = `${state.done.length} de 8 completados`;
+    $('feedback').textContent = state.done.length === 8 ? '¡Completaste la guía! Podés repasar cualquier paso desde el recorrido.' : 'Paso completado. En el recorrido podés volver a los que te faltan.';
+  }
 };
+$('uncomplete').onclick = () => {
+  state.done = state.done.filter(index => index !== state.index);
+  save(); render();
+};
+$('desktop').onclick = () => { $('preview').style.width = '100%'; };
+$('mobile').onclick = () => { $('preview').style.width = '375px'; };
+render();
 fetch('project.json').then(response => {
-  if (!response.ok) throw new Error('No se pudo cargar el proyecto');
+  if (!response.ok) throw new Error('Referencia no disponible');
   return response.json();
-}).then(data => { project = data; render(); }).catch(() => {
-  $('feedback').textContent = 'No se pudo cargar el proyecto. Recargá la página desde el servidor local o Sites.';
+}).then(data => { project = data; if (referenceFile) showFile(referenceFile); }).catch(() => {
+  $('source').textContent = 'No se pudo cargar la referencia. Podés abrir los archivos en VS Code.';
 });
